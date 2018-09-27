@@ -7,7 +7,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 from models import (
-    db, Relation, Universe,
+    db, Relation,
+    Universe, universe_schema,
     User, user_schema,
     Hero, hero_schema,
 )
@@ -229,3 +230,23 @@ def retrieve_random_hero():
             hero = hero.join(Universe).filter(func.lower(Universe.name)==universe.lower())
     hero = hero.order_by(func.random()).limit(1).first()
     return hero_schema.jsonify(hero)
+
+@app.route("/universes/")
+def list_universes():
+    """
+    List all universes
+
+    Query string params: None
+
+    Response: List of universe objects
+    [
+      {
+        name: "DC",
+        pk: 1
+      },
+      ...
+    ]
+    """
+
+    universes = Universe.query.all()
+    return universe_schema.jsonify(universes, many=True)

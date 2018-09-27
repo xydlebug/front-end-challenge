@@ -18,6 +18,7 @@ class UniverseSchema(ma.ModelSchema):
     class Meta:
         model = Universe
 
+universe_schema = UniverseSchema(many=True)
 
 class Hero(db.Model):
     pk = db.Column(db.Integer, primary_key=True)
