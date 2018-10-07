@@ -6,8 +6,6 @@ import { HeroesAPI } from './models/Heroes.js';
 
 class State {
 
-  // TODO persist userPk in session cookie.
-  // TODO persist universePk in session cookie?
   constructor () {
     this._users = [];
     this.usersReady = false;
