@@ -32,10 +32,7 @@ export class HeroesAPI {
   }
 
   static loadAll (universe) {
-    return m.request({
-      url: '/heroes/',
-      data: { universe }
-    }).then(
+    return m.request(`/heroes/${universe ? `?universe=${universe}` : ''}`).then(
       result => result.map(data => this.createHero(data))
     );
   }
@@ -47,8 +44,8 @@ export class HeroesAPI {
   }
 
   static loadRandom (universe) {
-    return m.request('/heroes/random').then(
-      result => result.map(data => this.createHero(data))
+    return m.request(`/heroes/random/?universe=${universe.pk}`).then(
+      result => this.createHero(result)
     );
   }
 

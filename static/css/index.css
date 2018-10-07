@@ -1,0 +1,42 @@
+.flex-fill {
+    flex: 1 1;
+}
+
+.App-UniverseChooser .btn-lg {
+    width: 50%;
+    max-width: 160px;
+}
+
+.App-logo {
+    text-align: left;
+}
+.App-logo img {
+    height: 40px;
+}
+.App-btn-remove {
+    text-align: right;
+}
+
+.App-btn-Marvel {
+    color: #fff;
+    background-color: #ED1D24;
+}
+.App-btn-Marvel .App-logo,
+.App-btn-Marvel .App-btn-remove {
+        width: 120px;
+}
+
+.App-btn-DC {
+    color: #fff;
+    background-color: #0376F2;
+}
+.App-btn-DC .App-logo,
+.App-btn-DC .App-btn-remove {
+    width: 60px;
+}
+
+.App-btn-save,
+.App-btn-cancel {
+    width: 50%;
+    max-width: 160px;
+}

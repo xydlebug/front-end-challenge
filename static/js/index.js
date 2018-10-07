@@ -1,68 +1,40 @@
 'use strict'
 
-import './mithril.js'
-import { UsersAPI } from './models/Users.js'
-import { UniversesAPI } from './models/Universes.js'
-import { HeroesAPI } from './models/Heroes.js'
+import './mithril.js';
+import state from './state.js';
+import { UserMenu } from './ui/UserMenu.js';
+import { UniverseChooser } from './ui/UniverseChooser.js';
+import { HeroesList } from './ui/HeroesList.js';
 
-let page = {
-  oninit: function(vnode) {
-    vnode.state.users = [];
-    vnode.state.chosenUser = null;
-    UsersAPI.loadAll().then(users => {
-      vnode.state.users = users;
-    });
-    UsersAPI.load(1).then(user => {
-      vnode.state.chosenUser = user;
-    });
+/*
+  If no user is chosen, then you can chose to view all heroes from one universe.
+  If a user is chosen, then you can view and edit the heroes of that user.
+*/
+class App {
+  
+  constructor () {
+    this.state = state;
+  }
+  oninit () {
+    this.state.init();
+  }
 
-    vnode.state.universes = [];
-    UniversesAPI.loadAll().then(universes => {
-      vnode.state.universes = universes;
-    });
-
-    vnode.state.heroes = {
-      DC: [],
-      Marvel: []
-    };
-    HeroesAPI.loadAll('DC').then(heroes => {
-      vnode.state.heroes.DC = heroes;
-    });
-    HeroesAPI.loadAll('Marvel').then(heroes => {
-      vnode.state.heroes.Marvel = heroes;
-    });
-  },
-
-  view: function(vnode) {
-    return m('.app', [
-      m('', [
-        m('h2', '/users/'),
-        m('ul', vnode.state.users.map(u => m('li', [
-          m('pre', JSON.stringify(u))
-        ])))
+  view () {
+    console.log(this.state);
+    return m('.App.container.p-0', [
+      m('.text-right.m-2', [
+        m(UserMenu, { state: this.state })
       ]),
-      m('', [
-        m('h2', '/users/:pk'),
-        m('pre', JSON.stringify(vnode.state.chosenUser))
+      m('h1.text-center.my-4', 'Hall of Heroes'),
+      m('.text-center.my-4', [
+        m(UniverseChooser, { state: this.state })
       ]),
-      m('', [
-        m('h2', '/universes/'),
-        m('ul', vnode.state.universes.map(u => m('li', [
-          m('pre', JSON.stringify(u))
-        ])))
-      ]),
-      m('', [
-        m('h2', '/heroes/?DC'),
-        m('ul', vnode.state.heroes.DC.map(h => m('li', [
-          m('pre', JSON.stringify(h))
-        ]))),
-        m('h2', '/heroes/?Marvel'),
-        m('ul', vnode.state.heroes.Marvel.map(h => m('li', [
-          m('pre', JSON.stringify(h))
-        ])))
-      ]),
+      m('.my-4', [
+        m(HeroesList, { state: this.state })
+      ])
     ]);
   }
+
 }
 
-m.mount(document.body, page)
+m.mount(document.body, App);

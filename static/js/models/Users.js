@@ -23,7 +23,12 @@ export class UsersAPI {
       lastName: last_name,
       email: email,
       dob: birthday,
-      relations: relations || []
+      relations: (relations || []).map(r => ({
+        ...r,
+        // decorate with attributes to track add/remove actions.
+        added: false,
+        removed: false
+      }))
     });
   }
 
@@ -39,16 +44,14 @@ export class UsersAPI {
     );
   }
 
-  edit (pk, add, remove) {
+  static edit (pk, add, remove) {
     return m.request({
       method: 'PATCH',
       url: `/users/${pk}/edit/`,
       data: { add, remove },
       headers: { 'Content-type': 'application/json' }
     }).then(
-      result => {
-        console.log(result);
-      }
+      result => this.createUser(result)
     );
   }
 
