@@ -170,10 +170,12 @@ class State {
   saveUserHeroes () {
     const add = this.user.relations.filter(r => r.added && !r.removed).map(r => r.hero);
     const remove = this.user.relations.filter(r => r.removed && !r.added).map(r => r.pk);
-    UsersAPI.edit(this._userPk, add, remove).then(user => {
-      const userIndex = this._users.findIndex(u => u.pk === user.pk);
-      this._users.splice(userIndex, 1, user);
-    }); // TODO error handling.
+    if (add.length || remove.length) {
+      UsersAPI.edit(this._userPk, add, remove).then(user => {
+        const userIndex = this._users.findIndex(u => u.pk === user.pk);
+        this._users.splice(userIndex, 1, user);
+      }); // TODO error handling.
+    }
   }
 
   cancelUserEdit () {
